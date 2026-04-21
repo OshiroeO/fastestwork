@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+/* Custom styles in @layer base so Tailwind utilities (@layer utilities) can override them */
+@layer base {
+  html, body {
+    width: 100%;
+    min-height: 100vh;
+    overflow-x: hidden;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    background-color: #f8fafc;
+    color: #1e293b;
+  }
+
+  #root {
+    width: 100%;
+    min-height: 100vh;
+  }
+}
