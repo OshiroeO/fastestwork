@@ -1,10 +1,15 @@
 import { useState } from "react";
 
-export default function Navbar({ activePage, onHomeClick, onVerificationClick, onMatchingClick }) {
+export default function Navbar({ activePage, onHomeClick, onRegisterClick, onMatchingClick, onLoginClick, onLogout, userRole }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const base = "text-blue-100 hover:text-white text-sm font-medium transition-colors";
-  const active = "text-white font-semibold text-sm border-b-2 border-blue-300 pb-0.5";
+
+  const roleLabel = userRole === "freelancer"
+    ? { avatar: "NT", name: "ณัฐวุฒิ", bg: "bg-blue-500" }
+    : userRole === "customer"
+    ? { avatar: "สส", name: "สมศักดิ์", bg: "bg-green-500" }
+    : null;
 
   return (
     <nav style={{ width: "100%", display: "block", boxSizing: "border-box", background: "#1d4ed8", boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)", position: "sticky", top: 0, zIndex: 50 }}>
@@ -23,20 +28,12 @@ export default function Navbar({ activePage, onHomeClick, onVerificationClick, o
 
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center gap-1">
-            <button onClick={onHomeClick} className={`px-3 py-2 rounded-lg transition-colors ${activePage === "home" ? "bg-blue-600 text-white font-semibold text-sm" : base}`}>
+            <button onClick={onHomeClick}
+              className={`px-3 py-2 rounded-lg transition-colors ${activePage === "home" ? "bg-blue-600 text-white font-semibold text-sm" : base}`}>
               หน้าแรก
             </button>
             <button onClick={onHomeClick} className={`px-3 py-2 rounded-lg ${base}`}>
               หมวดหมู่
-            </button>
-            <button
-              onClick={onVerificationClick}
-              className={`px-3 py-2 rounded-lg flex items-center gap-1.5 transition-colors ${activePage === "verification" ? "bg-blue-600 text-white font-semibold text-sm" : base}`}
-            >
-              🛡️ AI Screening
-              {activePage !== "verification" && (
-                <span className="bg-blue-500/60 text-blue-100 text-[10px] font-bold px-1.5 py-0.5 rounded-full leading-none">NEW</span>
-              )}
             </button>
             <button
               onClick={onMatchingClick}
@@ -49,14 +46,45 @@ export default function Navbar({ activePage, onHomeClick, onVerificationClick, o
             </button>
           </div>
 
-          {/* Auth */}
+          {/* Auth area */}
           <div className="hidden md:flex items-center gap-2">
-            <button className="text-white border border-blue-400 hover:bg-blue-600 px-4 py-1.5 rounded-lg text-sm font-medium transition-colors">
-              เข้าสู่ระบบ
-            </button>
-            <button className="bg-white text-blue-700 hover:bg-blue-50 px-4 py-1.5 rounded-lg text-sm font-bold transition-colors">
-              สมัครสมาชิก
-            </button>
+            {roleLabel ? (
+              // Logged-in state
+              <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 bg-blue-600/60 border border-blue-500 rounded-lg px-3 py-1.5">
+                  <div className={`w-6 h-6 ${roleLabel.bg} rounded-full flex items-center justify-center text-white font-bold text-xs`}>
+                    {roleLabel.avatar}
+                  </div>
+                  <span className="text-white text-sm font-medium">{roleLabel.name}</span>
+                  <span className="text-blue-200 text-xs">·</span>
+                  <span className="text-blue-200 text-xs">{userRole === "freelancer" ? "ฟรีแลนซ์" : "ลูกค้า"}</span>
+                </div>
+                <button
+                  onClick={onLogout}
+                  className="text-blue-200 hover:text-white border border-blue-500 hover:border-blue-300 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors"
+                >
+                  ออกจากระบบ
+                </button>
+              </div>
+            ) : (
+              // Logged-out state
+              <>
+                <button
+                  onClick={onLoginClick}
+                  className="text-white border border-blue-400 hover:bg-blue-600 px-4 py-1.5 rounded-lg text-sm font-medium transition-colors"
+                >
+                  เข้าสู่ระบบ
+                </button>
+                <button
+                  onClick={onRegisterClick}
+                  className={`px-4 py-1.5 rounded-lg text-sm font-bold transition-colors ${
+                    activePage === "register" ? "bg-blue-300 text-blue-900" : "bg-white text-blue-700 hover:bg-blue-50"
+                  }`}
+                >
+                  สมัครเป็นฟรีแลนซ์
+                </button>
+              </>
+            )}
           </div>
 
           {/* Mobile toggle */}
@@ -74,7 +102,6 @@ export default function Navbar({ activePage, onHomeClick, onVerificationClick, o
           <div className="md:hidden pb-4 space-y-1 border-t border-blue-600 pt-3">
             {[
               { label: "หน้าแรก", action: onHomeClick },
-              { label: "🛡️ AI Screening", action: onVerificationClick },
               { label: "🎯 AI Matching", action: onMatchingClick },
             ].map(({ label, action }) => (
               <button key={label} onClick={() => { action(); setMenuOpen(false); }}
@@ -83,8 +110,23 @@ export default function Navbar({ activePage, onHomeClick, onVerificationClick, o
               </button>
             ))}
             <div className="flex gap-2 pt-2">
-              <button className="flex-1 text-white border border-blue-400 px-3 py-1.5 rounded-lg text-sm">เข้าสู่ระบบ</button>
-              <button className="flex-1 bg-white text-blue-700 px-3 py-1.5 rounded-lg text-sm font-bold">สมัครสมาชิก</button>
+              {roleLabel ? (
+                <button onClick={() => { onLogout(); setMenuOpen(false); }}
+                  className="flex-1 text-white border border-blue-400 px-3 py-1.5 rounded-lg text-sm">
+                  ออกจากระบบ ({roleLabel.name})
+                </button>
+              ) : (
+                <>
+                  <button onClick={() => { onLoginClick(); setMenuOpen(false); }}
+                    className="flex-1 text-white border border-blue-400 px-3 py-1.5 rounded-lg text-sm">
+                    เข้าสู่ระบบ
+                  </button>
+                  <button onClick={() => { onRegisterClick(); setMenuOpen(false); }}
+                    className="flex-1 bg-white text-blue-700 px-3 py-1.5 rounded-lg text-sm font-bold">
+                    สมัครฟรีแลนซ์
+                  </button>
+                </>
+              )}
             </div>
           </div>
         )}
