@@ -17,13 +17,21 @@ export default function Navbar({ activePage, onHomeClick, onRegisterClick, onMat
         <div className="flex items-center justify-between h-16">
 
           {/* Logo */}
-          <div className="flex items-center gap-2 cursor-pointer" onClick={onHomeClick}>
-            <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
-              <span className="text-blue-700 font-black text-sm">FW</span>
-            </div>
-            <span className="text-white font-bold text-xl tracking-tight">
-              Fastest<span className="text-blue-200">work</span>
-            </span>
+          <div
+            className="cursor-pointer"
+            onClick={onHomeClick}
+            style={{ height: "64px", overflow: "hidden", display: "flex", alignItems: "center" }}
+          >
+            <img
+              src="/logo.png"
+              alt="Fastestwork"
+              style={{
+                height: "140px",
+                width: "auto",
+                mixBlendMode: "multiply",
+                marginTop: "4px",
+              }}
+            />
           </div>
 
           {/* Desktop Nav */}

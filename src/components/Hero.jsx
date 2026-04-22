@@ -30,10 +30,10 @@ export default function Hero({ onSearch }) {
         </p>
 
         {/* Search box */}
-        <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-3 max-w-2xl mx-auto mb-6">
+        <form onSubmit={handleSearch} style={{ display: "flex", flexDirection: "row", gap: "0", maxWidth: "640px", margin: "0 auto 1.5rem", background: "white", borderRadius: "16px", boxShadow: "0 20px 60px rgba(0,0,0,0.25)", overflow: "hidden", border: "1px solid rgba(255,255,255,0.3)" }}>
           <div className="relative flex-1">
             <svg
-              className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
+              style={{ position: "absolute", left: "16px", top: "50%", transform: "translateY(-50%)", width: "20px", height: "20px", color: "#94a3b8" }}
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -45,12 +45,12 @@ export default function Hero({ onSearch }) {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="ค้นหาบริการ เช่น ออกแบบโลโก้, เว็บไซต์..."
-              className="w-full pl-12 pr-4 py-4 rounded-xl text-gray-800 text-base focus:outline-none focus:ring-2 focus:ring-blue-300 shadow-lg"
+              style={{ width: "100%", paddingLeft: "48px", paddingRight: "16px", paddingTop: "18px", paddingBottom: "18px", fontSize: "15px", color: "#1e293b", background: "transparent", border: "none", outline: "none" }}
             />
           </div>
           <button
             type="submit"
-            className="bg-blue-400 hover:bg-blue-300 text-blue-900 font-bold px-8 py-4 rounded-xl transition-colors shadow-lg whitespace-nowrap"
+            style={{ background: "linear-gradient(135deg, #2563eb, #4f46e5)", color: "white", fontWeight: "700", fontSize: "15px", padding: "0 28px", border: "none", cursor: "pointer", whiteSpace: "nowrap", flexShrink: 0 }}
           >
             ค้นหา
           </button>
